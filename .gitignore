@@ -1,0 +1,20 @@
+# Foundry
+out/
+cache/
+broadcast/
+lib/
+
+# Soldeer
+dependencies/
+
+# Environment
+.env
+.env.local
+
+# IDE
+.vscode/
+.DS_Store
+
+# Coverage
+test/coverage/
+lcov.info
