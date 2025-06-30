@@ -10,7 +10,7 @@
     "test": "vitest",
     "test:run": "vitest run",
     "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
+    "test:forge": "forge test",
     "anvil": "anvil --hardfork prague"
   },
   "dependencies": {
