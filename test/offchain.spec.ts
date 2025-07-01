@@ -8,7 +8,6 @@ import { encodeFunctionData, zeroAddress } from "viem";
 
 // Anvil account private keys
 const ACCOUNT_2_PRIVATE_KEY = "0x59c6995e998f97a5a0044966f0945389dc9e86dae88c7a8412f4603b6b78690d";
-const ACCOUNT_3_PRIVATE_KEY = "0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a";
 
 describe("SmartWallet EIP-7702 Authorization", () => {
   it("should deploy implementation and authorize for EOAs using SET_CODE_TX_TYPE", async () => {
@@ -56,5 +55,27 @@ describe("SmartWallet EIP-7702 Authorization", () => {
     });
 
     expect(owner).toBe(delegator.address);
+
+    // Account can remove code by sending a SET_CODE_TX_TYPE transaction with a zero address
+    const cleanupAuthorization = await walletClient.signAuthorization({
+      contractAddress: zeroAddress,
+      account: delegator,
+      executor: 'self',
+    });
+
+    const cleanupTx = await walletClient.sendTransaction({
+      account: delegator,
+      type: "eip7702",
+      authorizationList: [cleanupAuthorization],
+    });
+
+    const cleanupReceipt = await client.waitForTransactionReceipt({ hash: cleanupTx });
+    expect(cleanupReceipt.status).toBe("success");
+
+    const codeAfterCleanup = await client.getCode({
+      address: delegatorAddress,
+    });
+
+    expect(codeAfterCleanup).toBe(undefined);
   });
 });
