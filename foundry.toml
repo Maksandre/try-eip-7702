@@ -1,9 +1,11 @@
 [profile.default]
 src = "src"
 out = "out"
+evm_version="prague"
 libs = ["dependencies"]
 
 [dependencies]
 forge-std = "1.9.7"
+"@openzeppelin-contracts" = "5.4.0-rc.1"
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options
